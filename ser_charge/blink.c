@@ -13,7 +13,7 @@ green and red diodes
 */
 void lamp_init(void){
  cli();
- LAMP_CONTROL |= 0b00000110; /* set led pins to out MUST USE MACROS */
+ LAMP_CONTROL |= 1 << RED_PIN | 1 << GREEN_PIN; /* set led pins to out */
  TCCR1B = (0<<CS12)|(1<<CS11)|(1<<CS10); /* 1Ghz/64 ~ 11661 tics per second (see CS bits of register TCCR */
  TIMSK |= (1<<TOIE1); /* enable timer_1 interrupts */
  TCNT1 = 64456 - 11661; /* blink every 1 sec */ 
