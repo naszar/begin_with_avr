@@ -9,6 +9,7 @@
 #define L_GREEN_CONST   2                                                                                                                                  
 #define L_ALL_OFF       0                                                                                                                                  
 #define L_RED_BLINK     3  
+#define L_RED_CONST	4
 
 void lamp_init(void);
 void lamp_change_state(int);

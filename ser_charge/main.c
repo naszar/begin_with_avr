@@ -52,7 +52,7 @@ main()
 			}
 		else
 			if(v_val < V_BAT_MAX)
-				lamp_change_state(L_RED_BLINK);
+				lamp_change_state(L_RED_CONST);
 			else
 				lamp_change_state(L_GREEN_CONST);
 		}

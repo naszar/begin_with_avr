@@ -31,6 +31,10 @@ void lamp_change_state(int state){
 		lamp_state[0] = ~(0|1<<RED_PIN) & 0xff; /*turn off red pin */
 		lamp_state[1] = 0 | 1 << GREEN_PIN; /*set green on*/
 		break;
+	case L_RED_CONST:
+		lamp_state[0] = ~(0|1<<GREEN_PIN) & 0xff; /*turn off green pin */
+		lamp_state[1] = 0 | 1 << RED_PIN; /*set green on*/
+		break;
 	case L_GREEN_BLINK:
 		lamp_state[1] = 0 | 1 << GREEN_PIN; /* set green to on */
 		lamp_state[0] = 0xff & ~(1<<GREEN_PIN) & ~(1<<RED_PIN); /* set  red and green pin off */ 
