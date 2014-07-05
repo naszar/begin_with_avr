@@ -7,8 +7,8 @@
 
 #define V_TO_COUNTS(X)	(int) (X*256/5)
 #define V_BAT_MIN	V_TO_COUNTS(0.7)
-#define V_BAT_MAX_MAX	V_TO_COUNTS(4.3)
-#define V_BAT_MAX_MIN	V_TO_COUNTS(4)
+#define V_BAT_MAX_MAX	V_TO_COUNTS(4)
+#define V_BAT_MAX_MIN	V_TO_COUNTS(3.7)
 
 #define TEMP_BAT_MIN	V_TO_COUNTS(0.1)
 #define TEMP_BAT_MAX	V_TO_COUNTS(2)
@@ -49,6 +49,7 @@ main()
 					}
 				else
 					lamp_change_state(L_RED_BLINK);
+				charge_max = V_BAT_MAX_MAX;
 				POWER_PORT &= ~(1 << POWER_PIN);
 				}
 			else
