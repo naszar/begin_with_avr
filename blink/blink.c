@@ -19,19 +19,19 @@ void lamp_init(void)
 {
 	cli();
 	LAMP_CONTROL |= 1 << BLINKER_PIN | 1 << SIREN_PIN |
-		1 << COP_L_RED_PIN | 1 << COP_L_WHITE_PIN;	
+	    1 << COP_L_RED_PIN | 1 << COP_L_WHITE_PIN | 1 << 5;
 	/* set led pins to out 
-	* 1Ghz ~ 1M tics per second
-	* 001 - /1
-	* 010 - /8
-	* 011 - /64
-	* 100 - /256
-	* 101 - /1024
-	* (see CS bits of register TCCR */
+	 * 1Ghz ~ 1M tics per second
+	 * 001 - /1
+	 * 010 - /8
+	 * 011 - /64
+	 * 100 - /256
+	 * 101 - /1024
+	 * (see CS bits of register TCCR */
 
-	TCCR1B = (0 << CS12) | (0 << CS11) | (1 << CS10);	 
-	TIMSK |= (1 << TOIE1);	     /* enable timer_1 interrupts */
-	TCNT1 = 65535 - TIMER_PERIOD;/* interrupt every .0005 sec or f=2kHz */
+	TCCR1B = (0 << CS12) | (0 << CS11) | (1 << CS10);
+	TIMSK |= (1 << TOIE1);	/* enable timer_1 interrupts */
+	TCNT1 = 65535 - TIMER_PERIOD;	/* interrupt every .0005 sec or f=2kHz */
 	TCNT1 = 0;
 	sei();
 
@@ -40,18 +40,17 @@ void lamp_init(void)
 void set_magic_on_off(uint8_t state)
 {
 	cli();
-	if (state == B_ON) {
+	if (button_state != B_ON && state == B_ON) {
 		even_flipper = 0;
 		toplamp_counter = 0;
-		siren_counter = 0;
 		button_state = B_ON;
-		siren_cur_freq = 0;
+		siren_cur_freq = 1;
 		LAMP_PORT |= 1 << COP_L_WHITE_PIN;
-	} else {
+	} else if (state == B_OFF) {
 		button_state = B_OFF;
-		LAMP_PORT &= 0 << COP_L_RED_PIN;
-		LAMP_PORT &= 0 << COP_L_WHITE_PIN;
-		LAMP_PORT &= 0 << SIREN_PIN;
+		LAMP_PORT &= ~(1 << COP_L_RED_PIN);
+		LAMP_PORT &= ~(0 << COP_L_WHITE_PIN);
+		LAMP_PORT &= ~(0 << SIREN_PIN);
 	}
 	sei();
 }
@@ -79,17 +78,17 @@ ISR(TIMER1_OVF_vect)
 			toplamp_counter = 0;
 		}
 
-		if (siren_counter++ == 6000) {
+		if (siren_counter++ == 2000) {
 			siren_counter = 0;
 			siren_cur_freq ^= 1;
 		}
 
 		lamp_port ^= 1 << SIREN_PIN;
-		if (even_flipper && siren_cur_freq)
+		if (siren_cur_freq && even_flipper)
 			lamp_port ^= 1 << SIREN_PIN;
 		even_flipper ^= 1;
 	}
 
-	LAMP_PORT = lamp_port; /* write all to port (once)*/
+	LAMP_PORT = lamp_port;	/* write all to port (once) */
 	sei();
 }
