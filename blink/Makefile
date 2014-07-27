@@ -1,12 +1,12 @@
 #Target binary name 
-TARG=test_charge
+TARG=blinker
  
 CC = avr-gcc
 OBJCOPY = avr-objcopy
  
 # progect files
-SRCS= main.c adc.c blink.c
-HEADERS= adc.h blink.h
+SRCS= main.c blink.c
+HEADERS= blink.h
  
 OBJS = $(SRCS:.c=.o)
  
