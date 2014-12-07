@@ -1,0 +1,12 @@
+v0.8 27/09/2012
+===============
+- added custom characters
+
+v0.7 26/09/2012
+===============
+- added line control
+- added printLCD and printLCDXY now we can print strings
+
+v0.5 25/09/2012
+===============
+- basic 4 bit mode implementation
